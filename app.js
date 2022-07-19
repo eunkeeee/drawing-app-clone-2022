@@ -4,25 +4,27 @@ canvas.width = 800;
 canvas.height = 800;
 
 ctx.lineWidth = 2;
-// ctx.moveTo(0, 0);
+let isPainting = false;
 
-const colors = [
-  "#c678f0",
-  "#fec4c3",
-  "#ff4344",
-  "#ffa535",
-  "#fef95d",
-  "#bd60ed",
-  "#fdafaf",
-  "#fe941a",
-];
-
-function mousemove(event) {
-  ctx.beginPath();
-  ctx.moveTo(Math.floor(Math.random() * 800), Math.floor(Math.random() * 800));
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  ctx.strokeStyle = color;
-  ctx.lineTo(event.offsetX, event.offsetY);
-  ctx.stroke();
+function onMove(event) {
+  if (isPainting) {
+    // 마우스를 누르고 있으면 => 선을 그리도록 함
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+    return;
+  }
+  // 마우스를 누르고 있지 않으면 => 시작점을 옮기기만 함
+  ctx.moveTo(event.offsetX, event.offsetY);
 }
-canvas.addEventListener("mousemove", mousemove);
+
+function startPainting() {
+  isPainting = true;
+}
+
+function cancelPainting() {
+  isPainting = false;
+}
+canvas.addEventListener("mousemove", onMove);
+canvas.addEventListener("mousedown", startPainting);
+canvas.addEventListener("mouseup", cancelPainting);
+document.addEventListener("mouseup", cancelPainting);
