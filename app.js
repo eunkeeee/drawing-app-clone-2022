@@ -7,6 +7,7 @@ const modeBtn = document.querySelector("#mode-btn");
 const destroyBtn = document.querySelector("#destroy-btn");
 const eraserBtn = document.querySelector("#eraser-btn");
 const fileInput = document.querySelector("#file");
+const textInput = document.querySelector("#text");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d"); // paint brush
 
@@ -23,7 +24,7 @@ let isFill = false;
 function onMove(event) {
   if (isPainting) {
     // 마우스를 누르고 있으면 => 선을 그리도록 함
-    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.lineTo(event.offsetX, event.offsetY); // 마우스가 존재하는 지점 (캔버스 내 좌표)
     ctx.stroke();
     return;
   }
@@ -86,7 +87,18 @@ function onFileChange(event) {
     fileInput.value = null;
   };
 }
+function onDouleClick(event) {
+  const text = textInput.value;
+  if (text !== "") {
+    ctx.save(); // 이전의 두께 등 저장
+    ctx.lineWidth = 1;
+    ctx.font = "68px serif";
+    ctx.fillText(text, event.offsetX, event.offsetY); // coordeinates of where we should add the text
+    ctx.restore(); // 저장된 정보를 불러옴
+  }
+}
 
+canvas.addEventListener("dblclick", onDouleClick);
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainting);
 canvas.addEventListener("mouseup", cancelPainting);
