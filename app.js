@@ -8,6 +8,7 @@ const destroyBtn = document.querySelector("#destroy-btn");
 const eraserBtn = document.querySelector("#eraser-btn");
 const fileInput = document.querySelector("#file");
 const textInput = document.querySelector("#text");
+const saveBtn = document.querySelector("#save");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d"); // paint brush
 
@@ -98,6 +99,13 @@ function onDouleClick(event) {
     ctx.restore(); // 저장된 정보를 불러옴
   }
 }
+function onSaveClick() {
+  const url = canvas.toDataURL();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "myDrawing.png";
+  a.click();
+}
 
 canvas.addEventListener("dblclick", onDouleClick);
 canvas.addEventListener("mousemove", onMove);
@@ -112,3 +120,4 @@ modeBtn.addEventListener("click", changeMode);
 destroyBtn.addEventListener("click", onDestroyClick);
 eraserBtn.addEventListener("click", onEraserClick);
 fileInput.addEventListener("change", onFileChange);
+saveBtn.addEventListener("click", onSaveClick);
