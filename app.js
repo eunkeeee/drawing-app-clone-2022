@@ -18,6 +18,7 @@ canvas.width = 800;
 canvas.height = 800;
 
 ctx.lineWidth = lineWidth.value;
+ctx.lineCap = "round";
 let isPainting = false;
 let isFill = false;
 
