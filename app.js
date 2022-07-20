@@ -3,9 +3,15 @@ const color = document.querySelector("#color");
 const colorOptions = Array.from(
   document.getElementsByClassName("color-option")
 );
-const strokeFill = document.querySelector("#stroke-fill");
+const modeBtn = document.querySelector("#mode-btn");
+const destroyBtn = document.querySelector("#destroy-btn");
+const eraserBtn = document.querySelector("#eraser-btn");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d"); // paint brush
+
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 800;
+
 canvas.width = 800;
 canvas.height = 800;
 
@@ -49,16 +55,25 @@ function onColorClick(event) {
 function changeMode() {
   if (isFill) {
     isFill = false;
-    strokeFill.innerText = "Fill";
+    modeBtn.innerText = "Fill";
   } else {
     isFill = true;
-    strokeFill.innerText = "Draw";
+    modeBtn.innerText = "Draw";
   }
 }
 function onCanvasClick() {
   if (isFill) {
-    ctx.fillRect(0, 0, 800, 800);
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   }
+}
+function onDestroyClick() {
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+}
+function onEraserClick() {
+  ctx.strokeStyle = "white";
+  isFill = false;
+  modeBtn.innerText = "Draw";
 }
 
 canvas.addEventListener("mousemove", onMove);
@@ -69,4 +84,6 @@ document.addEventListener("mouseup", cancelPainting);
 lineWidth.addEventListener("change", onLineWidthChange);
 color.addEventListener("change", onColorChange);
 colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
-strokeFill.addEventListener("click", changeMode);
+modeBtn.addEventListener("click", changeMode);
+destroyBtn.addEventListener("click", onDestroyClick);
+eraserBtn.addEventListener("click", onEraserClick);
